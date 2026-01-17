@@ -1,0 +1,79 @@
+---
+title: "Random Forest Explained"
+author: "Johnson Leung"
+date: "2026-01-15"
+categories: [explainer]
+image: "image.jpg"
+---
+
+## The Wisdom of the Crowd: Why Random Forests are the Backbone of Modern Predictive Modelling
+
+In the world of machine learning, a recurring theme is that the collective is often smarter than the individual. This concept, known as the "wisdom of the crowd," is demonstrated by one of the most powerful algorithms to have remained a staple for data scientists despite the rise of complex deep learning: **The Random Forest**.
+
+Whether you are predicting customer churn, diagnosing a medical condition, or deciding which car to buy, Random Forests offers a balance of accuracy, stability, and interpretability that is hard to beat. But how does a collection of "trees" actually make a decision? To understand the forest, we must first look at the individual trees.
+
+## The Decision Tree
+
+Imagine you are in the market for a new car. You call a friend for advice. Your friend doesn't just shout a brand name at you; instead, they walk you through a series of logical questions:
+
+1.  "What is your budget?" (If over \$50k, go to luxury; if under, go to economy).
+
+2.  "Do you prioritize fuel efficiency?" (If yes, look at hybrids).
+
+3.  "Is a lower safety rating a deal breaker?"
+
+Each of these questions acts as a "node" in a flowchart. By the time you answered all their questions, they arrive at a "leaf", a specific recommendation, like a Toyota Corolla. In data science, we call this algorithm a **Decision Tree**. It is intuitive, fast, and mimics human logic perfectly.
+
+However, individual decision trees have a fatal flaw: they are incredibly prone to overfitting.
+
+## The Problem of Overfitting
+
+Decision trees are prone to a phenomenon called overfitting. In our car analogy, imagine your friend had one terrible experience with a Toyota ten years ago. Because of that single data point, they might advise everyone to avoid Toyotas, regardless of how well the car fits the buyer's current needs.
+
+In data science speak, the tree grows too deep and begins to "memorize" the noise and outliers in the training data rather than learning the general patterns.
+
+## Enter the Random Forest
+
+A Random Forest solves the overfitting problem by creating an ensemble. Instead of asking one biased friend for advice, you ask 100 different friends. This is the essence of an ensemble model: combining the predictions of multiple "weak learners" to create a "strong learner."
+
+But there is a catch: if all 100 friends look at the exact same data, they will likely all develop the same biases. To ensure the forest is truly diverse, the algorithm introduces two layers of randomness.
+
+#### 1. Bagging
+
+First, each tree in the forest is trained on a different subset of the data. We use a technique called bootstrapping, in which we randomly sample from the dataset with replacement. Some data points might appear multiple times in one tree's training set, while others might not appear at all.
+
+#### 2. Feature Randomness
+
+Second, and perhaps most importantly, we don't let every tree see every feature. If you are buying a car, you might tell Friend A only about your budget and fuel needs, and tell Friend B only about safety ratings and performance.
+
+By restricting the features (columns) available to each tree, we force the trees to look for patterns they might otherwise ignore. This ensures that the trees are decorrelated. If one feature is a very strong predictor (like "Price"), a standard decision tree would always split on it first. By hiding "Price" from some trees, we allow other important variables to have a "say" in the final outcome.
+
+## How the Forest Reaches a Verdict
+
+Once all the trees (the "friends") have been trained, it’s time to make a prediction. This happens through a democratic process:
+
+-   For Classification (e.g., Should I buy this car? Yes/No): Every tree in the forest casts a vote. If 80 trees say "Yes" and 20 say "No," the Random Forest predicts "Yes." This is known as Majority Voting.
+
+-   For Regression (e.g., What will this car cost?): Each tree predicts a specific numerical value. The output of the Random Forest is the average of all these predictions.
+
+## Why Random Forests?
+
+The transition from a single tree to a forest provides three benefits that make it a robust framework for real-world data.
+
+#### 1. Resilience to Overfitting
+
+The primary advantage is reduced variance. While an individual tree might be highly sensitive to "noise" (as in the "Toyota bias" example), the forest averages these biases out. One tree’s error is offset by another tree’s correct prediction. As long as the trees are not making the exact same mistakes, the collective error decreases as the forest grows.
+
+#### 2. Superior Stability
+
+In a single decision tree, a small change in the data, like adding five new car models to the list, can completely restructure the tree from the root down. Random forests are far more stable. For a prediction to change, a majority of the trees must change their minds. This makes the model much more stable and less likely to be distracted by minor fluctuations in the data.
+
+#### 3. Handling Complexity and Non-Linearity
+
+Real-world data is rarely linear. Relationships between variables are often complex. Because a random forest can capture these interactions across its many trees, it is very good at finding hidden patterns.
+
+## Practical Trade-offs
+
+No model is perfect, and that is true with random forests. Since a Random Forest necessitates the training of many trees, it makes it much slower and less interpretable than a single Decision Tree. Although lower, we can still generally determine how a random forest model makes predictions using Feature Importance. The metric can tell us exactly which variables (e.g., fuel efficiency vs. price) were most influential across the entire forest, giving us a "macro" view of what drives the data.
+
+For use cases where interpretability is paramount (e.g., for inference purposes), Random Forests would not be a suitable model to use.
